@@ -1,8 +1,25 @@
+#include <algorithm>
+#include <cmath>
+#include <stack>
+
 #include "binary_tree_node.h"
 #include "test_framework/generic_test.h"
+
+int GetHeight(const unique_ptr<BinaryTreeNode<int>>& tree) {
+  if (!tree) {
+    return -1;
+  }
+  auto const left_height{GetHeight(tree->left)};
+  auto const right_height{GetHeight(tree->right)};
+  if (std::abs(left_height - right_height) > 1 || left_height == -2 ||
+      right_height == -2) {
+    return -2;
+  }
+  return std::max(left_height, right_height) + 1;
+}
+
 bool IsBalanced(const unique_ptr<BinaryTreeNode<int>>& tree) {
-  // TODO - you fill in here.
-  return true;
+  return GetHeight(tree) > -2;
 }
 
 int main(int argc, char* argv[]) {
