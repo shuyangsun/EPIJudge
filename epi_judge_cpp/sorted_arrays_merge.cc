@@ -9,16 +9,16 @@ using std::priority_queue;
 using std::vector;
 
 vector<int> MergeSortedArrays(const vector<vector<int>>& sorted_arrays) {
-  size_t total_size{std::accumulate(
-      sorted_arrays.begin(), sorted_arrays.end(), static_cast<size_t>(0),
-      [](size_t accum, vector<int> const& vec) { return accum + vec.size(); })};
-
   priority_queue<int, vector<int>, std::greater<int>> queue{};
   for (auto const& vec : sorted_arrays) {
     for (auto const& ele : vec) {
       queue.emplace(ele);
     }
   }
+
+  size_t total_size{std::accumulate(
+      sorted_arrays.begin(), sorted_arrays.end(), static_cast<size_t>(0),
+      [](size_t accum, vector<int> const& vec) { return accum + vec.size(); })};
   vector<int> res{};
   res.reserve(total_size);
   while (!queue.empty()) {
