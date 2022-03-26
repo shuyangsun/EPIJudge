@@ -1,10 +1,28 @@
 #include <string>
+#include <unordered_map>
 
 #include "test_framework/generic_test.h"
 using std::string;
+using std::unordered_map;
 
 bool CanFormPalindrome(const string& s) {
-  // TODO - you fill in here.
+  unordered_map<char, bool> occurance{};
+  for (auto const ch : s) {
+    if (occurance.find(ch) == occurance.end()) {
+      occurance.insert({ch, true});
+    } else {
+      occurance[ch] = !occurance[ch];
+    }
+  }
+  bool did_find_single{false};
+  for (auto const& key_val : occurance) {
+    if (key_val.second) {
+      if (did_find_single) {
+        return false;
+      }
+      did_find_single = true;
+    }
+  }
   return true;
 }
 
