@@ -5,8 +5,23 @@ using std::vector;
 
 vector<int> IntersectTwoSortedArrays(const vector<int>& A,
                                      const vector<int>& B) {
-  // TODO - you fill in here.
-  return {};
+  vector<int> res{};
+  auto a{A.begin()};
+  auto b{B.begin()};
+  while (a < A.end() && b < B.end()) {
+    if (*a == *b) {
+      if (res.empty() || *a != res.back()) {
+        res.emplace_back(*a);
+      }
+      ++a;
+      ++b;
+    } else if (*a < *b) {
+      ++a;
+    } else {
+      ++b;
+    }
+  }
+  return res;
 }
 
 int main(int argc, char* argv[]) {
