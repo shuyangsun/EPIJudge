@@ -1,15 +1,56 @@
 #include <array>
 #include <stack>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "test_framework/generic_test.h"
 #include "test_framework/test_failure.h"
 #include "test_framework/timed_executor.h"
 using std::array;
+using std::get;
+using std::make_tuple;
 using std::stack;
+using std::tuple;
 using std::vector;
 const int kNumPegs = 3;
+
+inline int GetIdlePeg(const int from_peg, const int to_peg) {
+  int idle_peg = 0;
+  if (from_peg != 1 && to_peg != 1) {
+    idle_peg = 1;
+  }
+  if (from_peg != 2 && to_peg != 2) {
+    idle_peg = 2;
+  }
+  return idle_peg;
+}
+
+vector<vector<int>> TowerHanioNoRecursion(int num_rings, int from_peg,
+                                          int to_peg) {
+  if (num_rings <= 0) {
+    return {};
+  }
+  stack<tuple<int, int, int>> s{};
+  s.push(make_tuple(num_rings, from_peg, to_peg));
+  vector<vector<int>> result{};
+  while (!s.empty()) {
+    const auto cur{s.top()};
+    s.pop();
+    const int cur_num{get<0>(cur)};
+    const int cur_from{get<1>(cur)};
+    const int cur_to{get<2>(cur)};
+    const int idle_peg{GetIdlePeg(cur_from, cur_to)};
+    if (cur_num == 1) {
+      result.push_back({cur_from, cur_to});
+      continue;
+    }
+    s.push(make_tuple(cur_num - 1, idle_peg, cur_to));
+    s.push(make_tuple(1, cur_from, cur_to));
+    s.push(make_tuple(cur_num - 1, cur_from, idle_peg));
+  }
+  return result;
+}
 
 vector<vector<int>> TowerHanio(int num_rings, int from_peg, int to_peg) {
   if (num_rings <= 0) {
@@ -18,13 +59,7 @@ vector<vector<int>> TowerHanio(int num_rings, int from_peg, int to_peg) {
   if (num_rings == 1) {
     return {{from_peg, to_peg}};
   }
-  int idle_peg = 0;
-  if (from_peg != 1 && to_peg != 1) {
-    idle_peg = 1;
-  }
-  if (from_peg != 2 && to_peg != 2) {
-    idle_peg = 2;
-  }
+  const int idle_peg{GetIdlePeg(from_peg, to_peg)};
   auto result{TowerHanio(num_rings - 1, from_peg, idle_peg)};
   result.push_back({from_peg, to_peg});
   auto second_step{TowerHanio(num_rings - 1, idle_peg, to_peg)};
@@ -33,7 +68,7 @@ vector<vector<int>> TowerHanio(int num_rings, int from_peg, int to_peg) {
 }
 
 vector<vector<int>> ComputeTowerHanoi(int num_rings) {
-  return TowerHanio(num_rings, 0, 1);
+  return TowerHanioNoRecursion(num_rings, 0, 1);
 }
 
 void ComputeTowerHanoiWrapper(TimedExecutor& executor, int num_rings) {
