@@ -10,10 +10,32 @@ using std::array;
 using std::stack;
 using std::vector;
 const int kNumPegs = 3;
-vector<vector<int>> ComputeTowerHanoi(int num_rings) {
-  // TODO - you fill in here.
-  return {};
+
+vector<vector<int>> TowerHanio(int num_rings, int from_peg, int to_peg) {
+  if (num_rings <= 0) {
+    return {};
+  }
+  if (num_rings == 1) {
+    return {{from_peg, to_peg}};
+  }
+  int idle_peg = 0;
+  if (from_peg != 1 && to_peg != 1) {
+    idle_peg = 1;
+  }
+  if (from_peg != 2 && to_peg != 2) {
+    idle_peg = 2;
+  }
+  auto result{TowerHanio(num_rings - 1, from_peg, idle_peg)};
+  result.push_back({from_peg, to_peg});
+  auto second_step{TowerHanio(num_rings - 1, idle_peg, to_peg)};
+  result.insert(result.end(), second_step.begin(), second_step.end());
+  return result;
 }
+
+vector<vector<int>> ComputeTowerHanoi(int num_rings) {
+  return TowerHanio(num_rings, 0, 1);
+}
+
 void ComputeTowerHanoiWrapper(TimedExecutor& executor, int num_rings) {
   array<stack<int>, kNumPegs> pegs;
   for (int i = num_rings; i >= 1; --i) {
