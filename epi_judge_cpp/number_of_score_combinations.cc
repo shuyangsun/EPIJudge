@@ -9,10 +9,12 @@ int NumCombinationsForFinalScore(int final_score,
   dp[0] = 1;
   for (auto const score : individual_play_scores) {
     for (int i{1}; i <= final_score; ++i) {
-      const int delta{i - score};
-      if (delta == 0) {
+      if (i == score) {
         ++dp[i];
-      } else if (delta > 0 && dp[delta] > 0) {
+        continue;
+      }
+      const int delta{i - score};
+      if (delta >= 0 && dp[delta] > 0) {
         dp[i] += dp[delta];
       }
     }
