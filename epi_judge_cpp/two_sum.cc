@@ -1,11 +1,19 @@
+#include <unordered_set>
 #include <vector>
 
 #include "test_framework/generic_test.h"
+using std::unordered_set;
 using std::vector;
 
 bool HasTwoSum(const vector<int>& A, int t) {
-  // TODO - you fill in here.
-  return true;
+  unordered_set<int> cache{};
+  for (auto const& ele : A) {
+    if (cache.find(t - ele) != cache.end() || t % 2 == 0 && t / 2 == ele) {
+      return true;
+    }
+    cache.insert(ele);
+  }
+  return false;
 }
 
 int main(int argc, char* argv[]) {

@@ -2364,7 +2364,7 @@ problem_mapping = {
                 "total": 103
             },
             "C++: two_sum.cc": {
-                "passed": 0,
+                "passed": 1005,
                 "total": 1005
             },
             "Java: MinimumPointsCoveringIntervals.java": {
@@ -2386,7 +2386,7 @@ problem_mapping = {
         },
         "17.04 The 3-sum problem": {
             "C++: three_sum.cc": {
-                "passed": 0,
+                "passed": 1008,
                 "total": 1008
             },
             "Java: ThreeSum.java": {
