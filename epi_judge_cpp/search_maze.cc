@@ -6,7 +6,9 @@
 #include "test_framework/serialization_traits.h"
 #include "test_framework/test_failure.h"
 #include "test_framework/timed_executor.h"
+
 using std::vector;
+
 enum class Color { kWhite, kBlack };
 struct Coordinate {
   bool operator==(const Coordinate& that) const {
@@ -15,10 +17,38 @@ struct Coordinate {
 
   int x, y;
 };
+
+bool SearchMazeHelper(vector<vector<Color>> maze, const Coordinate& s,
+                      const Coordinate& e, vector<Coordinate>& path) {
+  if (s.x < 0 || s.x >= maze.size() || s.y < 0 || s.y >= maze.size() ||
+      maze[s.x][s.y] == Color::kBlack) {
+    return false;
+  }
+
+  path.push_back(s);
+  maze[s.x][s.y] = Color::kBlack;
+  if (s == e) {
+    return true;
+  }
+  for (const auto next_move : {
+           Coordinate{s.x - 1, s.y},
+           Coordinate{s.x + 1, s.y},
+           Coordinate{s.x, s.y - 1},
+           Coordinate{s.x, s.y + 1},
+       }) {
+    if (SearchMazeHelper(maze, s, e, path)) {
+      return true;
+    }
+  }
+  path.pop_back();
+  return false;
+}
+
 vector<Coordinate> SearchMaze(vector<vector<Color>> maze, const Coordinate& s,
                               const Coordinate& e) {
-  // TODO - you fill in here.
-  return {};
+  vector<Coordinate> path{};
+  SearchMazeHelper(maze, s, e, path);
+  return path;
 }
 
 namespace test_framework {
