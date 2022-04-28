@@ -424,7 +424,7 @@ problem_mapping = {
         },
         "5.18 Compute the spiral ordering of a 2D array": {
             "C++: spiral_ordering.cc": {
-                "passed": 0,
+                "passed": 3,
                 "total": 51
             },
             "Java: SpiralOrdering.java": {
@@ -496,7 +496,7 @@ problem_mapping = {
         },
         "6.02 Base conversion": {
             "C++: convert_base.cc": {
-                "passed": 0,
+                "passed": 1435,
                 "total": 20001
             },
             "Java: ConvertBase.java": {
