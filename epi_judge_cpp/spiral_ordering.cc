@@ -4,7 +4,6 @@
 
 using namespace std;
 
-// TODO: not passing all tets.
 vector<int> MatrixInSpiralOrder(const vector<vector<int>>& square_matrix) {
   const auto& m{square_matrix};
   size_t n{m.size()};
@@ -23,7 +22,7 @@ vector<int> MatrixInSpiralOrder(const vector<vector<int>>& square_matrix) {
   while (count < n * n) {
     switch (dir) {
       case 0:  // Right
-        res.insert(res.end(), m[top].begin() + left, m[top].begin() + rseight);
+        res.insert(res.end(), m[top].begin() + left, m[top].begin() + right);
         count += right - left;
         ++top;
         break;
@@ -41,7 +40,7 @@ vector<int> MatrixInSpiralOrder(const vector<vector<int>>& square_matrix) {
         --bot;
         break;
       case 3:  // Up
-        for (size_t row{bot - 1}; row <= top; --row) {
+        for (size_t row{bot - 1}; row >= top; --row) {
           res.push_back(m[row][left]);
         }
         count += bot - top;
